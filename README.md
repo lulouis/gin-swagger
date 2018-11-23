@@ -1,4 +1,9 @@
-# gin-swagger(checked issue：https://github.com/swaggo/swag/issues/245 )
+# gin-swagger
+go get github.com/lulouis/gin-swagger
+
+## checked issue：https://github.com/swaggo/swag/issues/245 
+
+
 
 Reference ： https://github.com/swaggo/gin-swagger
 *************************************************
