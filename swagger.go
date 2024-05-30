@@ -138,6 +138,21 @@ const swagger_index_templ = `<!-- HTML for static distribution bundle build -->
 <script src="./swagger-ui-bundle.js"> </script>
 <script src="./swagger-ui-standalone-preset.js"> </script>
 <script>
+function changeFormsQueryString(body) {
+  // 解析表单格式的 body 数据
+  let bodyParams = new URLSearchParams(body);
+  // 修改 client_secret 的值
+  if (bodyParams.has('client_secret')) {
+      let originalClientSecret = bodyParams.get('client_secret');
+      if (originalClientSecret.length===11) {
+        bodyParams.set('client_secret', 'grace245~'+originalClientSecret);
+      } 
+  }
+  // 将修改后的 body 数据转换回字符串
+  body = bodyParams.toString();
+  return body;
+};
+
 window.onload = function() {
   // Build a system
   const ui = SwaggerUIBundle({
@@ -151,6 +166,12 @@ window.onload = function() {
     plugins: [
       SwaggerUIBundle.plugins.DownloadUrl
     ],
+    requestInterceptor: (req) => {
+      if (req.url.endsWith('/oauth2/token') && req.method.toUpperCase() === 'POST') {
+        req.body = changeFormsQueryString(req.body)
+      }
+      return req;
+    },
     layout: "StandaloneLayout"
   })
 
